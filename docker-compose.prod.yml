@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    depends_on:
+      - api
+      - app-frontend
+      - admin-frontend
+    restart: always
+
+  api:
+    build:
+      context: .
+      dockerfile: services/api/Dockerfile
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=${JWT_SECRET}
+      - META_APP_ID=${META_APP_ID}
+      - META_APP_SECRET=${META_APP_SECRET}
+      - META_API_VERSION=${META_API_VERSION}
+    depends_on:
+      - postgres
+      - redis
+    restart: always
+
+  app-frontend:
+    build:
+      context: services/app-frontend
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=https://${DOMAIN_NAME}/api
+      - NEXT_PUBLIC_SOCKET_URL=https://${DOMAIN_NAME}
+    restart: always
+
+  admin-frontend:
+    build:
+      context: services/admin-frontend
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=https://${DOMAIN_NAME}/api
+    restart: always
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  redis:
+    image: redis:alpine
+    restart: always
+
+volumes:
+  postgres_data:
