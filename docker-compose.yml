@@ -1,0 +1,178 @@
+version: "3.9"
+
+services:
+  # =====================
+  # NGINX LOAD BALANCER
+  # =====================
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: aerostic-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./deploy/nginx:/etc/nginx/conf.d:ro
+      - ./deploy/ssl:/etc/ssl:ro
+    depends_on:
+      - api
+      - frontend
+      - webhook-worker
+    restart: always
+
+  # =====================
+  # FRONTEND (Next.js)
+  # =====================
+  frontend:
+    build:
+      context: .
+      dockerfile: services/frontend/Dockerfile
+    container_name: aerostic-frontend
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://localhost:53614
+    ports:
+      - "5361:3000"
+    restart: always
+
+  # =====================
+  # DASHBOARD FRONTEND
+  # =====================
+  app-frontend:
+    build:
+      context: .
+      dockerfile: services/app-frontend/Dockerfile
+    container_name: aerostic-app
+    ports:
+      - "5362:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://localhost:53614
+    depends_on:
+      - api
+    restart: always
+
+  # =====================
+  # ADMIN PANEL
+  # =====================
+  admin-frontend:
+    build:
+      context: .
+      dockerfile: services/admin-frontend/Dockerfile
+    container_name: aerostic-admin
+    ports:
+      - "53613:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://localhost:53614
+    depends_on:
+      - api
+    restart: always
+
+  # =====================
+  # MAIN BACKEND API
+  # =====================
+  api:
+    build:
+      context: .
+      dockerfile: services/api/Dockerfile
+    container_name: aerostic-api
+    environment:
+      - DATABASE_URL=postgres://aerostic:aerostic_password@postgres:5432/aerostic
+      - REDIS_URL=redis://redis:6379
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "53614:3000"
+    restart: always
+
+  # =====================
+  # WEBHOOK WORKER (META)
+  # =====================
+  webhook-worker:
+    build:
+      context: .
+      dockerfile: services/webhook-worker/Dockerfile
+    container_name: aerostic-webhook
+    environment:
+      - DATABASE_URL=postgres://aerostic:aerostic_password@postgres:5432/aerostic
+      - REDIS_URL=redis://redis:6379
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - redis
+    restart: always
+
+  # =====================
+  # MESSAGE QUEUE WORKER
+  # =====================
+  message-worker:
+    build:
+      context: .
+      dockerfile: services/message-worker/Dockerfile
+    container_name: aerostic-message-worker
+    environment:
+      - DATABASE_URL=postgres://aerostic:aerostic_password@postgres:5432/aerostic
+      - REDIS_URL=redis://redis:6379
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - postgres
+    restart: always
+
+  # =====================
+  # AI WORKER
+  # =====================
+  ai-worker:
+    build:
+      context: .
+      dockerfile: services/ai-worker/Dockerfile
+    container_name: aerostic-ai-worker
+    environment:
+      - DATABASE_URL=postgres://aerostic:aerostic_password@postgres:5432/aerostic
+      - REDIS_URL=redis://redis:6379
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - postgres
+    restart: always
+
+  # =====================
+  # POSTGRESQL
+  # =====================
+  postgres:
+    image: postgres:15-alpine
+    container_name: aerostic-postgres
+    environment:
+      POSTGRES_DB: aerostic
+      POSTGRES_USER: aerostic
+      POSTGRES_PASSWORD: aerostic_password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    restart: always
+
+  # =====================
+  # REDIS (CACHE + QUEUE)
+  # =====================
+  redis:
+    image: redis:7-alpine
+    container_name: aerostic-redis
+    command: redis-server --appendonly yes
+    volumes:
+      - redisdata:/data
+    restart: always
+
+# =====================
+# VOLUMES
+# =====================
+volumes:
+  pgdata:
+  redisdata:
