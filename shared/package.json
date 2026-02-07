@@ -1,0 +1,14 @@
+{
+    "name": "@aerostic/common",
+    "version": "1.0.0",
+    "private": true,
+    "main": "dist/index.js",
+    "build": "tsc",
+    "dependencies": {
+        "bcrypt": "^5.1.1",
+        "crypto": "^1.0.1"
+    },
+    "devDependencies": {
+        "typescript": "^5.1.3"
+    }
+}

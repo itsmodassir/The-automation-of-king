@@ -1,0 +1,11 @@
+{
+    "name": "aerostic",
+    "private": true,
+    "workspaces": [
+        "services/*"
+    ],
+    "scripts": {
+        "build:all": "npm run build --workspaces",
+        "test:all": "npm test --workspaces"
+    }
+}
