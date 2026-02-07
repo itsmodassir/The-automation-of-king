@@ -126,24 +126,6 @@ services:
     restart: always
 
   # =====================
-  # AI WORKER
-  # =====================
-  ai-worker:
-    build:
-      context: .
-      dockerfile: services/ai-worker/Dockerfile
-    container_name: aerostic-ai-worker
-    environment:
-      - DATABASE_URL=postgres://aerostic:aerostic_password@postgres:5432/aerostic
-      - REDIS_URL=redis://redis:6379
-    env_file:
-      - .env
-    depends_on:
-      - redis
-      - postgres
-    restart: always
-
-  # =====================
   # POSTGRESQL
   # =====================
   postgres:
