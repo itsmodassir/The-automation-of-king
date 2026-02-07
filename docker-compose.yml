@@ -25,7 +25,7 @@ services:
   # =====================
   frontend:
     build:
-      context: ./aerostic/services/frontend
+      context: ./services/frontend
       dockerfile: Dockerfile
     container_name: aerostic-frontend
     environment:
@@ -40,7 +40,7 @@ services:
   # =====================
   app-frontend:
     build:
-      context: ./aerostic/services/app-frontend
+      context: ./services/app-frontend
       dockerfile: Dockerfile
     container_name: aerostic-app
     ports:
@@ -57,7 +57,7 @@ services:
   # =====================
   admin-frontend:
     build:
-      context: ./aerostic/services/admin-frontend
+      context: ./services/admin-frontend
       dockerfile: Dockerfile
     container_name: aerostic-admin
     ports:
@@ -74,7 +74,7 @@ services:
   # =====================
   api:
     build:
-      context: ./aerostic/services/api
+      context: ./services/api
       dockerfile: Dockerfile
     container_name: aerostic-api
     environment:
@@ -94,7 +94,7 @@ services:
   # =====================
   webhook-worker:
     build:
-      context: ./aerostic/services/webhook-worker
+      context: ./services/webhook-worker
       dockerfile: Dockerfile
     container_name: aerostic-webhook
     environment:
@@ -112,7 +112,7 @@ services:
   # =====================
   message-worker:
     build:
-      context: ./aerostic/services/message-worker
+      context: ./services/message-worker
       dockerfile: Dockerfile
     container_name: aerostic-message-worker
     environment:
