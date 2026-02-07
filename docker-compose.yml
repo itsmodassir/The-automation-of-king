@@ -25,8 +25,8 @@ services:
   # =====================
   frontend:
     build:
-      context: .
-      dockerfile: services/frontend/Dockerfile
+      context: ./aerostic/services/frontend
+      dockerfile: Dockerfile
     container_name: aerostic-frontend
     environment:
       - NODE_ENV=production
@@ -40,8 +40,8 @@ services:
   # =====================
   app-frontend:
     build:
-      context: .
-      dockerfile: services/app-frontend/Dockerfile
+      context: ./aerostic/services/app-frontend
+      dockerfile: Dockerfile
     container_name: aerostic-app
     ports:
       - "5362:3000"
@@ -57,8 +57,8 @@ services:
   # =====================
   admin-frontend:
     build:
-      context: .
-      dockerfile: services/admin-frontend/Dockerfile
+      context: ./aerostic/services/admin-frontend
+      dockerfile: Dockerfile
     container_name: aerostic-admin
     ports:
       - "53613:3000"
@@ -74,8 +74,8 @@ services:
   # =====================
   api:
     build:
-      context: .
-      dockerfile: services/api/Dockerfile
+      context: ./aerostic/services/api
+      dockerfile: Dockerfile
     container_name: aerostic-api
     environment:
       - DATABASE_URL=postgres://aerostic:aerostic_password@postgres:5432/aerostic
@@ -94,8 +94,8 @@ services:
   # =====================
   webhook-worker:
     build:
-      context: .
-      dockerfile: services/webhook-worker/Dockerfile
+      context: ./aerostic/services/webhook-worker
+      dockerfile: Dockerfile
     container_name: aerostic-webhook
     environment:
       - DATABASE_URL=postgres://aerostic:aerostic_password@postgres:5432/aerostic
@@ -112,8 +112,8 @@ services:
   # =====================
   message-worker:
     build:
-      context: .
-      dockerfile: services/message-worker/Dockerfile
+      context: ./aerostic/services/message-worker
+      dockerfile: Dockerfile
     container_name: aerostic-message-worker
     environment:
       - DATABASE_URL=postgres://aerostic:aerostic_password@postgres:5432/aerostic
