@@ -20,7 +20,14 @@ export class MetaService {
             throw new BadRequestException('Invalid or expired OAuth state');
         }
 
-        const decoded = decrypt(state);
+        const decryptedState = decrypt(state);
+        let decoded: any;
+        try {
+            decoded = JSON.parse(decryptedState);
+        } catch (e) {
+            decoded = { tenantId: decryptedState };
+        }
+
         if (decoded.tenantId !== cachedTenant) {
             throw new BadRequestException('OAuth state mismatch');
         }
