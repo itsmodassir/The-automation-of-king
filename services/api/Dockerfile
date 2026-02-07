@@ -1,21 +1,6 @@
 FROM node:20-alpine
-
 WORKDIR /app
-
-# Copy package files
-COPY package*.json ./
-
-# Install dependencies
-RUN npm install --production
-
-# Copy source code
 COPY . .
-
-# Build the application
-RUN npm run build
-
-# Expose port
-EXPOSE 3000
-
-# Start the application
-CMD ["npm", "run", "start:prod"]
+RUN npm install
+RUN npm run build --workspace services/api
+CMD ["npm", "run", "start:prod", "--workspace", "services/api"]
