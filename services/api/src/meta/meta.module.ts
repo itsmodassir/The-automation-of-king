@@ -4,10 +4,10 @@ import { MetaController } from './meta.controller';
 import { MetaService } from './meta.service';
 import { MetaToken } from './entities/meta-token.entity';
 
-import { WhatsappAccount } from '../whatsapp/whatsapp-account.entity';
+import { WhatsAppAccount } from '../whatsapp/whatsapp-account.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([MetaToken, WhatsappAccount])],
+    imports: [TypeOrmModule.forFeature([MetaToken, WhatsAppAccount])],
     controllers: [MetaController],
     providers: [MetaService],
     exports: [MetaService],

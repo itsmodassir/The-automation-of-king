@@ -1,8 +1,7 @@
 FROM node:20-alpine
-# build-stamp: 2026-02-07-23-22
+# build-stamp: 2026-02-09-Phase1-Fix
 WORKDIR /app
 COPY . .
-RUN npm install
-RUN npm run build --workspace @aerostic/common
-RUN npm run build --workspace services/message-worker
-CMD ["npm", "run", "start:prod", "--workspace", "services/message-worker"]
+RUN npm install --legacy-peer-deps
+RUN npm run build --workspace @aerostic/message-worker
+CMD ["npm", "run", "start:prod", "--workspace", "@aerostic/message-worker"]

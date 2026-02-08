@@ -1,25 +1,30 @@
-version: '3.8'
+version: '3.9'
 
 services:
   nginx:
-    image: nginx:alpine
+    image: nginx:1.25-alpine
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
     depends_on:
       - api
       - app-frontend
       - admin-frontend
+      - frontend
+      - webhook-worker
     restart: always
+    env_file:
+      - .env
 
   api:
     build:
       context: .
       dockerfile: services/api/Dockerfile
+    container_name: aerostic-api
     environment:
       - NODE_ENV=production
       - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
@@ -28,32 +33,106 @@ services:
       - META_APP_ID=${META_APP_ID}
       - META_APP_SECRET=${META_APP_SECRET}
       - META_API_VERSION=${META_API_VERSION}
+      - DB_SYNC=${DB_SYNC}
+      - AES_ENCRYPTION_KEY=${AES_ENCRYPTION_KEY}
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
     depends_on:
       - postgres
       - redis
     restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   app-frontend:
     build:
-      context: services/app-frontend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: services/app-frontend/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: /api
+    container_name: aerostic-app
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=https://${DOMAIN_NAME}/api
-      - NEXT_PUBLIC_SOCKET_URL=https://${DOMAIN_NAME}
+      - NEXT_PUBLIC_API_URL=/api
+      - NEXT_PUBLIC_SOCKET_URL=/
+    restart: always
+    depends_on:
+      - api
+
+  frontend:
+    build:
+      context: .
+      dockerfile: services/frontend/Dockerfile
+    container_name: aerostic-frontend
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=/api
     restart: always
 
   admin-frontend:
     build:
-      context: services/admin-frontend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: services/admin-frontend/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: /api
+    container_name: aerostic-admin
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=https://${DOMAIN_NAME}/api
+      - NEXT_PUBLIC_API_URL=/api
     restart: always
+    depends_on:
+      - api
+
+  webhook-worker:
+    build:
+      context: .
+      dockerfile: services/webhook-worker/Dockerfile
+    container_name: aerostic-webhook
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - REDIS_URL=redis://redis:6379
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - redis
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  message-worker:
+    build:
+      context: .
+      dockerfile: services/message-worker/Dockerfile
+    container_name: aerostic-message-worker
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - REDIS_URL=redis://redis:6379
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - postgres
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   postgres:
     image: postgres:15-alpine
+    container_name: aerostic-postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -61,10 +140,25 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis:
-    image: redis:alpine
+    image: redis:7-alpine
+    container_name: aerostic-redis
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
     restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data:
+  redis_data:

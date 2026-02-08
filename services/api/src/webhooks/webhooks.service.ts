@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { WhatsappAccount } from '../whatsapp/whatsapp-account.entity';
+import { WhatsAppAccount } from '../whatsapp/whatsapp-account.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -11,8 +11,8 @@ export class WebhooksService {
 
     constructor(
         private readonly httpService: HttpService,
-        @InjectRepository(WhatsappAccount)
-        private readonly whatsappAccountRepo: Repository<WhatsappAccount>,
+        @InjectRepository(WhatsAppAccount)
+        private readonly whatsappAccountRepo: Repository<WhatsAppAccount>,
     ) { }
 
     async exchangeCodeForToken(code: string, tenantId: string) {

@@ -13,9 +13,12 @@ import { ContactsModule } from './contacts/contacts.module';
 import { AutomationModule } from './automation/automation.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
 import { AdminModule } from './admin/admin.module';
+import { AdminAuthModule } from './admin/auth/admin-auth.module';
 import { GlobalRedisModule } from './common/redis/redis.module';
+import { HealthModule } from './common/health/health.module';
 import { BullModule } from '@nestjs/bull';
 import { AuditLogsModule } from './audit-logs/audit-logs.module';
+import { DebugModule } from './debug/debug.module';
 
 @Module({
     imports: [
@@ -24,11 +27,16 @@ import { AuditLogsModule } from './audit-logs/audit-logs.module';
             type: 'postgres',
             url: process.env.DATABASE_URL,
             autoLoadEntities: true,
-            synchronize: false, // Production-ready
+            synchronize: process.env.DB_SYNC === 'true' && process.env.NODE_ENV !== 'production',
+            migrationsRun: false,
+            migrations: [],
+            logging: process.env.NODE_ENV === 'development',
+            logger: 'advanced-console',
         }),
         BullModule.forRoot({
-            redis: process.env.REDIS_URL || 'redis://localhost:6379',
+            url: process.env.REDIS_URL || 'redis://localhost:6379',
         }),
+        HealthModule,
         AuthModule,
         UsersModule,
         TenantsModule,
@@ -40,9 +48,11 @@ import { AuditLogsModule } from './audit-logs/audit-logs.module';
         ContactsModule,
         AutomationModule,
         WebhooksModule,
+        AdminAuthModule,
         AdminModule,
         GlobalRedisModule,
         AuditLogsModule,
+        ...(process.env.NODE_ENV !== 'production' ? [DebugModule] : []),
     ],
 })
 export class AppModule { }

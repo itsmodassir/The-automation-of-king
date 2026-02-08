@@ -1,0 +1,73 @@
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TenantController = void 0;
+const common_1 = require("@nestjs/common");
+const jwt_guard_1 = require("../auth/guards/jwt.guard");
+const tenant_service_1 = require("./tenant.service");
+let TenantController = class TenantController {
+    constructor(tenantService) {
+        this.tenantService = tenantService;
+    }
+    getBranding(req) {
+        return this.tenantService.getBranding(req.user.tenantId);
+    }
+    async getPublicBranding(req) {
+        const host = req.headers.host;
+        return this.tenantService.getBrandingByDomain(host);
+    }
+    setStatus(dto, req) {
+        return this.tenantService.setStatus(req.user.tenantId, dto.status);
+    }
+    updateBranding(dto, req) {
+        return this.tenantService.updateBranding(req.user.tenantId, dto);
+    }
+};
+exports.TenantController = TenantController;
+__decorate([
+    (0, common_1.Get)('branding'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], TenantController.prototype, "getBranding", null);
+__decorate([
+    (0, common_1.Get)('public/branding'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], TenantController.prototype, "getPublicBranding", null);
+__decorate([
+    (0, common_1.Post)('status'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", void 0)
+], TenantController.prototype, "setStatus", null);
+__decorate([
+    (0, common_1.Post)('branding'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", void 0)
+], TenantController.prototype, "updateBranding", null);
+exports.TenantController = TenantController = __decorate([
+    (0, common_1.Controller)('tenants'),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    __metadata("design:paramtypes", [tenant_service_1.TenantService])
+], TenantController);
+//# sourceMappingURL=tenant.controller.js.map

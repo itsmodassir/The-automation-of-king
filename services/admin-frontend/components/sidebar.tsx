@@ -12,11 +12,11 @@ import {
 } from "lucide-react";
 
 const menuItems = [
-    { name: "Control Tower", href: "/dashboard", icon: LayoutDashboard },
-    { name: "Tenants", href: "/dashboard/tenants", icon: Users },
-    { name: "Team", href: "/dashboard/admins", icon: Settings }, // "Admins" renamed to "Team" for better UI
-    { name: "Meta Tokens", href: "/dashboard/meta", icon: Key },
-    { name: "Audit Logs", href: "/dashboard/logs", icon: ShieldAlert },
+    { name: "Control Tower", href: "/", icon: LayoutDashboard },
+    { name: "Tenants", href: "/tenants", icon: Users },
+    { name: "Team", href: "/admins", icon: Settings }, // "Admins" renamed to "Team" for better UI
+    { name: "Meta Tokens", href: "/meta", icon: Key },
+    { name: "Audit Logs", href: "/logs", icon: ShieldAlert },
 ];
 
 export function Sidebar() {

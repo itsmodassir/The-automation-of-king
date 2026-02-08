@@ -12,6 +12,7 @@ export default function Hero() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
                         className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-50 border border-green-100 text-green-700 text-sm font-medium mb-8"
+                        suppressHydrationWarning
                     >
                         <ShieldCheck className="w-4 h-4" />
                         <span>Official Meta Business Partner Architecture</span>
@@ -40,6 +41,7 @@ export default function Hero() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.3 }}
                         className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+                        suppressHydrationWarning
                     >
                         <a
                             href="/dashboard"
@@ -61,6 +63,7 @@ export default function Hero() {
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.5, delay: 0.5 }}
                         className="mt-10 flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm text-gray-500"
+                        suppressHydrationWarning
                     >
                         <div className="flex items-center gap-2">
                             <CheckCircle2 className="w-4 h-4 text-green-600" />

@@ -5,7 +5,7 @@ import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bullmq';
 import { Redis } from 'ioredis';
 import { DedupeService } from './dedupe.service';
-import { WhatsappAccount } from '../../api/src/whatsapp/whatsapp-account.entity';
+import { WhatsAppAccount } from '../../api/src/whatsapp/whatsapp-account.entity';
 import { Message } from '../../api/src/messages/message.entity';
 import { Conversation } from '../../api/src/conversations/conversation.entity';
 import { Contact } from '../../api/src/contacts/contact.entity';
@@ -16,8 +16,8 @@ export class WebhookService {
 
     constructor(
         private dedupe: DedupeService,
-        @InjectRepository(WhatsappAccount)
-        private waRepo: Repository<WhatsappAccount>,
+        @InjectRepository(WhatsAppAccount)
+        private waRepo: Repository<WhatsAppAccount>,
         @InjectRepository(Message)
         private msgRepo: Repository<Message>,
         @InjectRepository(Conversation)

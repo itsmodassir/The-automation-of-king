@@ -2,7 +2,7 @@ import { Inject, Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Redis } from 'ioredis';
-import { WhatsappAccount } from '../whatsapp/whatsapp-account.entity';
+import { WhatsAppAccount } from '../whatsapp/whatsapp-account.entity';
 import axios from 'axios';
 import { decrypt, encrypt } from '@aerostic/common';
 
@@ -10,7 +10,7 @@ import { decrypt, encrypt } from '@aerostic/common';
 export class MetaService {
     constructor(
         @Inject('REDIS_CLIENT') private redis: Redis,
-        @InjectRepository(WhatsappAccount) private whatsappAccountRepo: Repository<WhatsappAccount>,
+        @InjectRepository(WhatsAppAccount) private whatsappAccountRepo: Repository<WhatsAppAccount>,
     ) { }
 
     async handleOAuthCallback(code: string, state: string) {
@@ -43,7 +43,7 @@ export class MetaService {
                     params: {
                         client_id: process.env.META_APP_ID,
                         client_secret: process.env.META_APP_SECRET,
-                        redirect_uri: 'https://api.aerostic.com/meta/callback',
+                        redirect_uri: `https://${process.env.API_DOMAIN || 'localhost:3001'}/api/meta/callback`,
                         code,
                     },
                 },

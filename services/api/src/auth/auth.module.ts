@@ -13,12 +13,12 @@ import { TenantsModule } from '../tenants/tenant.module';
         UsersModule,
         TenantsModule,
         JwtModule.register({
-            secret: process.env.JWT_SECRET,
+            secret: process.env.JWT_SECRET || 'supersecret',
             signOptions: { expiresIn: '7d' },
         }),
     ],
     providers: [AuthService, JwtStrategy],
     controllers: [AuthController],
-    exports: [AuthService],
+    exports: [AuthService, JwtStrategy, PassportModule, JwtModule],
 })
 export class AuthModule { }

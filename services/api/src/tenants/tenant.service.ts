@@ -33,14 +33,13 @@ export class TenantService {
         return this.tenantRepo.update(tenantId, branding);
     }
 
-    async create(name: string, email: string) {
-        // Generate a simple domain slug from name
-        const slug = name.toLowerCase().replace(/[^a-z0-9]/g, '-');
-        const domain = `${slug}-${Math.floor(Math.random() * 10000)}`;
+    async create(name: string, email: string, domain?: string) {
+        // Use provided domain or generate from name
+        const tenantDomain = domain || `${name.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${Math.floor(Math.random() * 10000)}`;
 
         const tenant = this.tenantRepo.create({
             name,
-            domain, // temporary domain
+            domain: tenantDomain,
             status: 'active',
         });
         return this.tenantRepo.save(tenant);

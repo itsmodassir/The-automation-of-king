@@ -1,8 +1,7 @@
 FROM node:20-alpine
-# build-stamp: 2026-02-07-23-22
+# build-stamp: 2026-02-09-Phase1-Fix
 WORKDIR /app
 COPY . .
-RUN npm install
-RUN npm run build --workspace @aerostic/common
-RUN npm run build --workspace services/webhook-worker
-CMD ["npm", "run", "start:prod", "--workspace", "services/webhook-worker"]
+RUN npm install --legacy-peer-deps
+RUN npm run build --workspace @aerostic/webhook-worker
+CMD ["npm", "run", "start:prod", "--workspace", "@aerostic/webhook-worker"]

@@ -38,23 +38,39 @@ export class AuthService {
     }
 
     async register(dto: any) {
-        // 1. Create Tenant
-        const tenant = await this.tenantService.create(dto.workspaceName, dto.email);
+        try {
+            console.log('Registration started with:', { name: dto.name, email: dto.email, domain: dto.domain });
 
-        // 2. Hash Password
-        const salt = await bcrypt.genSalt();
-        const hash = await bcrypt.hash(dto.password, salt);
+            // 1. Create Tenant
+            console.log('Creating tenant...');
+            const tenant = await this.tenantService.create(dto.name, dto.email, dto.domain);
+            console.log('Tenant created:', tenant.id);
 
-        // 3. Create User
-        const user = this.userRepo.create({
-            email: dto.email,
-            password: hash,
-            tenantId: tenant.id,
-            role: 'admin', // First user is admin
-        });
-        const savedUser = await this.userRepo.save(user);
+            // 2. Hash Password
+            console.log('Hashing password...');
+            const salt = await bcrypt.genSalt();
+            const hash = await bcrypt.hash(dto.password, salt);
+            console.log('Password hashed');
 
-        // 4. Return Token
-        return this.login(savedUser);
+            // 3. Create User
+            console.log('Creating user...');
+            const user = this.userRepo.create({
+                name: dto.name,
+                email: dto.email,
+                password: hash,
+                tenantId: tenant.id,
+                role: 'admin', // First user is admin
+            });
+            console.log('User entity created, saving...');
+            const savedUser = await this.userRepo.save(user);
+            console.log('User saved:', savedUser.id);
+
+            // 4. Return Token
+            console.log('Generating token...');
+            return this.login(savedUser);
+        } catch (error) {
+            console.error('Registration error:', error);
+            throw error;
+        }
     }
 }

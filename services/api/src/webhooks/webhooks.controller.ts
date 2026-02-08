@@ -1,4 +1,5 @@
-import { Controller, Post, Get, Body, Query, Req, Res } from '@nestjs/common';
+import { Controller, Post, Get, Body, Query } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBody } from '@nestjs/swagger';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { InboxGateway } from '../messages/inbox.gateway';
@@ -6,6 +7,7 @@ import { WebhookEvent } from './webhook-event.entity';
 import { WhatsappService } from '../whatsapp/whatsapp.service';
 import { ConversationService } from '../messages/conversation.service';
 
+@ApiTags('Webhooks')
 @Controller('webhooks/whatsapp')
 export class WebhooksController {
     constructor(
@@ -17,6 +19,12 @@ export class WebhooksController {
     ) { }
 
     @Get()
+    @ApiOperation({ summary: 'Verify Webhook URL', description: 'Handles the Meta webhook verification challenge.' })
+    @ApiQuery({ name: 'hub.mode', description: 'Mode check (subscribe)' })
+    @ApiQuery({ name: 'hub.verify_token', description: 'Your secret verify token' })
+    @ApiQuery({ name: 'hub.challenge', description: 'Challenge string to echo back' })
+    @ApiResponse({ status: 200, description: 'Returns the challenge string if successful.' })
+    @ApiResponse({ status: 403, description: 'Forbidden if token is invalid.' })
     verify(@Query('hub.mode') mode: string, @Query('hub.verify_token') token: string, @Query('hub.challenge') challenge: string) {
         if (mode === 'subscribe' && token === process.env.WHATSAPP_VERIFY_TOKEN) {
             return challenge;
@@ -25,6 +33,9 @@ export class WebhooksController {
     }
 
     @Post()
+    @ApiOperation({ summary: 'Receive Webhook Events', description: 'Handles incoming messages and status updates from WhatsApp.' })
+    @ApiBody({ description: 'Meta Webhook JSON Payload' })
+    @ApiResponse({ status: 200, description: 'Event processed successfully.' })
     async handle(@Body() body: any) {
         const entry = body.entry?.[0];
         const changes = entry?.changes?.[0];

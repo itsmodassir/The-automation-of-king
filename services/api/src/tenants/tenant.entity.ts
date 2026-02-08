@@ -20,21 +20,20 @@ export class Tenant {
     @Column({ name: 'ai_confidence_threshold', type: 'float', default: 0.7 })
     aiConfidenceThreshold!: number;
 
-    @Column({ length: 100, nullable: true })
+    @Column({ name: 'brandName', length: 100, nullable: true })
     brandName: string;
 
-    @Column({ length: 7, default: '#000000' })
+    @Column({ name: 'primaryColor', length: 7, default: '#000000' })
     primaryColor: string;
 
-    @Column({ nullable: true })
+    @Column({ name: 'logoUrl', nullable: true })
     logoUrl: string;
 
     @Column({ name: 'custom_domain', nullable: true, unique: true })
     customDomain: string;
 
     @Column({
-        type: 'enum',
-        enum: ['created', 'wa_connected', 'first_message_sent', 'live'],
+        type: 'varchar',
         default: 'created',
         name: 'onboarding_status'
     })

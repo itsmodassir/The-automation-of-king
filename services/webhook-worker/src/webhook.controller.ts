@@ -3,11 +3,22 @@ import { Response } from 'express';
 import { WebhookService } from './webhook.service';
 import { MetaSignatureGuard } from './signature.guard';
 
-@Controller('webhooks/meta')
+@Controller()
 export class WebhookController {
     constructor(private readonly service: WebhookService) { }
 
-    @Get()
+    // Health check endpoint
+    @Get('health')
+    health() {
+        return {
+            status: 'ok',
+            service: 'webhook-worker',
+            timestamp: new Date().toISOString(),
+            uptime: process.uptime(),
+        };
+    }
+
+    @Get('webhooks/meta')
     verify(
         @Query('hub.mode') mode: string,
         @Query('hub.verify_token') token: string,
@@ -23,7 +34,7 @@ export class WebhookController {
         return res.status(403).send('Forbidden');
     }
 
-    @Post()
+    @Post('webhooks/meta')
     @UseGuards(MetaSignatureGuard)
     async receive(@Req() req: any) {
         await this.service.process(req.body);

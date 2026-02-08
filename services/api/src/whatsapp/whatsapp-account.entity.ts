@@ -1,36 +1,48 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { Tenant } from '../tenants/tenant.entity';
 
 @Entity('whatsapp_accounts')
-export class WhatsappAccount {
+export class WhatsAppAccount {
     @PrimaryGeneratedColumn('uuid')
-    id!: string;
+    id: string;
+
+    @Column({ name: 'tenant_id' })
+    tenantId: string;
 
     @ManyToOne(() => Tenant)
     @JoinColumn({ name: 'tenant_id' })
-    tenant!: Tenant;
+    tenant: Tenant;
 
-    @Column({ name: 'tenant_id' })
-    tenantId!: string;
+    @Column({ name: 'waba_id', unique: true })
+    wabaId: string;
 
-    @Column({ name: 'waba_id' })
-    wabaId!: string;
+    @Column({ name: 'phone_number_id' })
+    phoneNumberId: string;
 
-    @Column({ name: 'phone_number_id', unique: true })
-    phoneNumberId!: string;
+    @Column({ name: 'phone_number', length: 20 })
+    phoneNumber: string;
 
-    @Column({ name: 'display_phone_number', nullable: true })
-    displayPhoneNumber!: string;
+    @Column({ name: 'display_phone_number', length: 20, nullable: true })
+    displayPhoneNumber: string;
 
-    @Column({ name: 'access_token_encrypted' })
-    accessTokenEncrypted!: string;
+    @Column({ name: 'business_name', nullable: true })
+    businessName: string;
 
-    @Column({ name: 'token_expires_at', type: 'timestamptz', nullable: true })
-    tokenExpiresAt!: Date;
+    @Column({ name: 'access_token', type: 'text' })
+    accessToken: string;
 
-    @Column({ default: 'connected' })
-    status!: string;
+    @Column({ name: 'access_token_encrypted', type: 'text', nullable: true })
+    accessTokenEncrypted: string;
+
+    @Column({ name: 'token_expires_at', nullable: true })
+    tokenExpiresAt: Date;
+
+    @Column({ default: 'active', length: 50 })
+    status: string;
 
     @CreateDateColumn({ name: 'created_at' })
-    createdAt!: Date;
+    createdAt: Date;
+
+    @UpdateDateColumn({ name: 'updated_at' })
+    updatedAt: Date;
 }

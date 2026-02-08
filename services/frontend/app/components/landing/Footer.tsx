@@ -37,8 +37,9 @@ export default function Footer() {
                             <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
                             <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
                             <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
+                            <li><a href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</a></li>
+                            <li><a href="/terms" className="hover:text-white transition-colors">Terms of Service</a></li>
+                            <li><a href="/data-deletion" className="hover:text-white transition-colors">Data Deletion</a></li>
                         </ul>
                     </div>
                 </div>
@@ -46,9 +47,9 @@ export default function Footer() {
                 <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center text-sm">
                     <div>&copy; {new Date().getFullYear()} Aerostic. All rights reserved.</div>
                     <div className="mt-4 md:mt-0 flex gap-6">
-                        <a href="#" className="hover:text-white">Privacy</a>
-                        <a href="#" className="hover:text-white">Terms</a>
-                        <a href="#" className="hover:text-white">Cookies</a>
+                        <a href="/privacy-policy" className="hover:text-white">Privacy</a>
+                        <a href="/terms" className="hover:text-white">Terms</a>
+                        <a href="/data-deletion" className="hover:text-white">Data Deletion</a>
                     </div>
                 </div>
             </div>

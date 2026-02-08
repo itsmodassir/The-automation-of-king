@@ -2,14 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UsageMetric } from '../billing/usage-metric.entity';
-import { WhatsappAccount } from '../whatsapp/whatsapp-account.entity';
+import { WhatsAppAccount } from '../whatsapp/whatsapp-account.entity';
 import { Message } from '../messages/message.entity';
 
 @Injectable()
 export class AnalyticsService {
     constructor(
         @InjectRepository(UsageMetric) private usage: Repository<UsageMetric>,
-        @InjectRepository(WhatsappAccount) private wa: Repository<WhatsappAccount>,
+        @InjectRepository(WhatsAppAccount) private wa: Repository<WhatsAppAccount>,
         @InjectRepository(Message) private msg: Repository<Message>,
     ) { }
 

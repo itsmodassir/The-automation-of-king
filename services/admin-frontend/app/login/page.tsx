@@ -7,23 +7,32 @@ export default function Login() {
 
     async function login() {
         try {
-            const res = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}/admin/auth/login`,
-                {
-                    method: "POST",
-                    body: JSON.stringify({ email, password }),
-                    headers: { "Content-Type": "application/json" },
-                }
-            );
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api';
+            const loginUrl = `${apiUrl}/admin/auth/login`;
+            console.log('Attempting login to:', loginUrl);
 
-            if (!res.ok) throw new Error('Login failed');
+            const res = await fetch(loginUrl, {
+                method: "POST",
+                body: JSON.stringify({ email, password }),
+                headers: { "Content-Type": "application/json" },
+            });
+
+            console.log('Response status:', res.status, res.statusText);
+
+            if (!res.ok) {
+                const errorData = await res.json().catch(() => ({ message: 'Unknown error' }));
+                console.error('Login error:', errorData);
+                throw new Error(errorData.message || 'Login failed');
+            }
 
             const data = await res.json();
+            console.log('Login successful, token received');
             document.cookie = `admin_token=${data.access_token}; path=/`;
             localStorage.setItem('admin_token', data.access_token);
             window.location.href = "/dashboard";
         } catch (err) {
-            alert('Invalid credentials or API error');
+            console.error('Login exception:', err);
+            alert(`Invalid credentials or API error: ${err instanceof Error ? err.message : 'Unknown error'}`);
         }
     }
 

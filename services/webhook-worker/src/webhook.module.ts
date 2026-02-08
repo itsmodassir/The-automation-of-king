@@ -7,7 +7,7 @@ import { WebhookService } from './webhook.service';
 import { DedupeService } from './dedupe.service';
 import { MetaSignatureGuard } from './signature.guard';
 import { WebhookEvent } from './entities/webhook-event.entity';
-import { WhatsappAccount } from '../../api/src/whatsapp/whatsapp-account.entity';
+import { WhatsAppAccount } from '../../api/src/whatsapp/whatsapp-account.entity';
 import { Message } from '../../api/src/messages/message.entity';
 
 import { Conversation } from '../../api/src/conversations/conversation.entity';
@@ -22,7 +22,7 @@ import { Contact } from '../../api/src/contacts/contact.entity';
             autoLoadEntities: true,
             synchronize: false,
         }),
-        TypeOrmModule.forFeature([WebhookEvent, WhatsappAccount, Message, Conversation, Contact]),
+        TypeOrmModule.forFeature([WebhookEvent, WhatsAppAccount, Message, Conversation, Contact]),
         BullModule.forRoot({
             url: process.env.REDIS_URL || 'redis://redis:6379',
         }),

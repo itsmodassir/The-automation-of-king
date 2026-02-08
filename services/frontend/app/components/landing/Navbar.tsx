@@ -31,8 +31,8 @@ export default function Navbar() {
                 </nav>
 
                 <div className="hidden md:flex items-center gap-4">
-                    <a href="/login" className="text-sm font-bold text-gray-900 hover:text-green-600 transition-colors">Log In</a>
-                    <a href="/dashboard" className="px-5 py-2.5 bg-green-600 text-white text-sm font-bold rounded-full hover:bg-green-700 transition-all shadow-lg shadow-green-600/20 flex items-center gap-2">
+                    <a href="https://app.aerostic.com/login" className="text-sm font-bold text-gray-900 hover:text-green-600 transition-colors">Log In</a>
+                    <a href="https://app.aerostic.com/dashboard" className="px-5 py-2.5 bg-green-600 text-white text-sm font-bold rounded-full hover:bg-green-700 transition-all shadow-lg shadow-green-600/20 flex items-center gap-2">
                         Get Started <ArrowRight className="w-4 h-4" />
                     </a>
                 </div>
@@ -52,8 +52,8 @@ export default function Navbar() {
                     <nav className="flex flex-col gap-4 text-center font-medium">
                         <a href="#features" className="py-2 hover:text-green-600">Features</a>
                         <a href="#pricing" className="py-2 hover:text-green-600">Pricing</a>
-                        <a href="/login" className="py-2 text-gray-900">Log In</a>
-                        <a href="/dashboard" className="py-3 bg-green-600 text-white rounded-lg">Get Started</a>
+                        <a href="https://app.aerostic.com/login" className="py-2 text-gray-900">Log In</a>
+                        <a href="https://app.aerostic.com/dashboard" className="py-3 bg-green-600 text-white rounded-lg">Get Started</a>
                     </nav>
                 </div>
             )}
