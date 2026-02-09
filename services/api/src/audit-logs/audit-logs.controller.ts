@@ -1,4 +1,4 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards, Req } from '@nestjs/common';
 import { AuditLogsService } from './audit-logs.service';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 
@@ -9,9 +9,10 @@ export class AuditLogsController {
 
     @Get()
     async getAuditLogs(
-        @Query('tenantId') tenantId?: string,
+        @Req() req: any,
         @Query('limit') limit?: string,
     ) {
-        return this.auditLogsService.findAll(tenantId, parseInt(limit) || 100);
+        // Security: Enforce tenant isolation by using the tenantId from the authenticated user's token
+        return this.auditLogsService.findAll(req.user.tenantId, parseInt(limit) || 100);
     }
 }

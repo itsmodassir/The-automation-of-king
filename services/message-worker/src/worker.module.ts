@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bull';
 import { SendMessageProcessor } from './send.processor';
 
+import { HealthController } from './health.controller';
+
 @Module({
     imports: [
         BullModule.forRoot({
@@ -20,6 +22,7 @@ import { SendMessageProcessor } from './send.processor';
             },
         }),
     ],
+    controllers: [HealthController],
     providers: [SendMessageProcessor],
 })
 export class AppModule { }

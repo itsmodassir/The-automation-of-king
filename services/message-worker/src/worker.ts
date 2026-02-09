@@ -7,7 +7,10 @@ const logger = new Logger('MessageWorker');
 
 async function bootstrap() {
     try {
-        const app = await NestFactory.createApplicationContext(AppModule);
+        // Create full NestJS application (HTTP Server) instead of just Context
+        const app = await NestFactory.create(AppModule);
+
+        // Log successful startup
         logger.log('✅ Message Worker started successfully');
 
         // Graceful shutdown
@@ -22,6 +25,12 @@ async function bootstrap() {
             await app.close();
             process.exit(0);
         });
+
+        const port = parseInt(process.env.PORT || '3002', 10);
+        await app.listen(port, () => {
+            logger.log(`✅ Message Worker listening on port ${port} for health checks`);
+        });
+
     } catch (error) {
         logger.error('Message Worker startup failed:', error);
         process.exit(1);
