@@ -28,6 +28,7 @@ export default function Navbar() {
                     <a href="#solutions" className="hover:text-green-600 transition-colors">Solutions</a>
                     <a href="#pricing" className="hover:text-green-600 transition-colors">Pricing</a>
                     <a href="#resources" className="hover:text-green-600 transition-colors">Resources</a>
+                    <a href="/contact" className="hover:text-green-600 transition-colors">Contact</a>
                 </nav>
 
                 <div className="hidden md:flex items-center gap-4">
@@ -52,6 +53,7 @@ export default function Navbar() {
                     <nav className="flex flex-col gap-4 text-center font-medium">
                         <a href="#features" className="py-2 hover:text-green-600">Features</a>
                         <a href="#pricing" className="py-2 hover:text-green-600">Pricing</a>
+                        <a href="/contact" className="py-2 hover:text-green-600">Contact</a>
                         <a href="https://app.aerostic.com/login" className="py-2 text-gray-900">Log In</a>
                         <a href="https://app.aerostic.com/dashboard" className="py-3 bg-green-600 text-white rounded-lg">Get Started</a>
                     </nav>

@@ -1,5 +1,5 @@
 "use client";
-import { Twitter, Linkedin, Facebook, Instagram } from "lucide-react";
+import { Twitter, Linkedin, Facebook, Instagram, Mail, Phone, MapPin } from "lucide-react";
 
 export default function Footer() {
     return (
@@ -11,11 +11,25 @@ export default function Footer() {
                         <p className="max-w-xs mb-8">
                             The official WhatsApp automation platform for high-growth teams. Safe, scalable, and built for business.
                         </p>
+                        <div className="space-y-3 mb-6 text-sm">
+                            <div className="flex items-center gap-2">
+                                <Mail className="w-4 h-4" />
+                                <a href="mailto:support@aerostic.com" className="hover:text-white transition-colors">support@aerostic.com</a>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Phone className="w-4 h-4" />
+                                <a href="tel:+1234567890" className="hover:text-white transition-colors">+1 (234) 567-890</a>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <MapPin className="w-4 h-4" />
+                                <span>Global Headquarters</span>
+                            </div>
+                        </div>
                         <div className="flex gap-4">
-                            <a href="#" className="hover:text-white transition-colors"><Twitter className="w-5 h-5" /></a>
-                            <a href="#" className="hover:text-white transition-colors"><Linkedin className="w-5 h-5" /></a>
-                            <a href="#" className="hover:text-white transition-colors"><Facebook className="w-5 h-5" /></a>
-                            <a href="#" className="hover:text-white transition-colors"><Instagram className="w-5 h-5" /></a>
+                            <a href="https://twitter.com/aerostic" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors"><Twitter className="w-5 h-5" /></a>
+                            <a href="https://linkedin.com/company/aerostic" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors"><Linkedin className="w-5 h-5" /></a>
+                            <a href="https://facebook.com/aerostic" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors"><Facebook className="w-5 h-5" /></a>
+                            <a href="https://instagram.com/aerostic" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors"><Instagram className="w-5 h-5" /></a>
                         </div>
                     </div>
 
@@ -33,10 +47,10 @@ export default function Footer() {
                     <div>
                         <h4 className="text-white font-bold mb-6">Company</h4>
                         <ul className="space-y-3 text-sm">
-                            <li><a href="#" className="hover:text-white transition-colors">About Us</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-                            <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
+                            <li><a href="#about" className="hover:text-white transition-colors">About Us</a></li>
+                            <li><a href="#careers" className="hover:text-white transition-colors">Careers</a></li>
+                            <li><a href="#blog" className="hover:text-white transition-colors">Blog</a></li>
+                            <li><a href="/contact" className="hover:text-white transition-colors">Contact</a></li>
                             <li><a href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</a></li>
                             <li><a href="/terms" className="hover:text-white transition-colors">Terms of Service</a></li>
                             <li><a href="/data-deletion" className="hover:text-white transition-colors">Data Deletion</a></li>
