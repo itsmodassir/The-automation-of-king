@@ -1,0 +1,174 @@
+╔════════════════════════════════════════════════════════════════╗
+║                    🔨 DOCKER REBUILD START                    ║
+╚════════════════════════════════════════════════════════════════╝
+
+📋 REBUILD CONFIGURATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Deploy Path: /home/ubuntu/aerostic
+Timestamp: 20260209_113046
+
+🛑 STEP 1: STOP EXISTING CONTAINERS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Stopping containers...
+ Container aerostic-admin-frontend-1 Stopping 
+ Container aerostic-nginx-1 Stopping 
+ Container aerostic-app-frontend-1 Stopping 
+ Container aerostic-app-frontend-1 Removing 
+ Container aerostic-nginx-1 Removing 
+ Container aerostic-admin-frontend-1 Removing 
+ Container aerostic-frontend-1 Stopping 
+ Container aerostic-frontend-1 Removing 
+ Container aerostic-api-1 Stopping 
+ Container aerostic-api-1 Removing 
+ Container aerostic-redis-1 Stopping 
+ Container aerostic-postgres-1 Stopping 
+ Container aerostic-postgres-1 Removing 
+ Container aerostic-redis-1 Removing 
+ Network aerostic_default Removing 
+ Network aerostic_default Removed 
+✓ Containers stopped
+
+📥 STEP 2: PULL LATEST CODE FROM GITHUB
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Pulling latest code...
+From https://github.com/itsmodassir/The-automation-of-king
+ * branch            main       -> FETCH_HEAD
+   f9e9b1d..500f760  main       -> origin/main
+HEAD is now at 500f760 docs: Add EC2 deployment status check report
+Latest commit:
+500f760 docs: Add EC2 deployment status check report
+✓ Code updated
+
+🐳 STEP 3: REBUILD DOCKER IMAGES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Building Docker images (this may take 15-20 minutes)...
+Services to build:
+  • API (NestJS)
+  • Admin Frontend (Next.js)
+  • App Frontend (Next.js)
+  • Frontend (Landing page)
+  • Webhook Worker (NestJS)
+  • Message Worker (NestJS)
+  • Nginx (Reverse proxy)
+
+✓ Docker images built successfully in 7m 46s
+
+🧹 STEP 4: CLEAN UP OLD IMAGES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Removing dangling images...
+unknown flag: --quiet
+
+Usage:  docker image prune [OPTIONS]
+
+Run 'docker image prune --help' for more information
+✓ Cleanup complete
+
+🚀 STEP 5: START CONTAINERS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Starting containers...
+ Network aerostic_default Creating 
+ Network aerostic_default Created 
+ Container aerostic-redis Creating 
+ Container aerostic-postgres Creating 
+ Container aerostic-frontend Creating 
+ Container aerostic-postgres Created 
+ Container aerostic-frontend Created 
+ Container aerostic-redis Created 
+ Container aerostic-message-worker Creating 
+ Container aerostic-api Creating 
+ Container aerostic-webhook Creating 
+ Container aerostic-webhook Created 
+ Container aerostic-api Created 
+ Container aerostic-app Creating 
+ Container aerostic-nginx Creating 
+ Container aerostic-admin Creating 
+ Container aerostic-message-worker Created 
+ Container aerostic-admin Created 
+ Container aerostic-app Created 
+ Container aerostic-nginx Created 
+ Container aerostic-frontend Starting 
+ Container aerostic-redis Starting 
+ Container aerostic-postgres Starting 
+ Container aerostic-redis Started 
+ Container aerostic-message-worker Starting 
+ Container aerostic-frontend Started 
+ Container aerostic-postgres Started 
+ Container aerostic-webhook Starting 
+ Container aerostic-api Starting 
+ Container aerostic-message-worker Started 
+ Container aerostic-webhook Started 
+ Container aerostic-api Started 
+ Container aerostic-nginx Starting 
+ Container aerostic-admin Starting 
+ Container aerostic-app Starting 
+ Container aerostic-admin Started 
+ Container aerostic-app Started 
+ Container aerostic-nginx Started 
+✓ Containers started
+
+✅ STEP 6: VERIFY CONTAINERS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Container Status:
+time="2026-02-09T11:39:09Z" level=warning msg="/home/ubuntu/aerostic/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+<no value>                STATUS                            PORTS
+aerostic-admin            Up 6 seconds                      0.0.0.0:3003->3000/tcp, [::]:3003->3000/tcp
+aerostic-api              Up 8 seconds (health: starting)   0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
+aerostic-app              Up 6 seconds                      0.0.0.0:3002->3000/tcp, [::]:3002->3000/tcp
+aerostic-frontend         Up 8 seconds                      0.0.0.0:3001->3000/tcp, [::]:3001->3000/tcp
+aerostic-message-worker   Up 8 seconds (health: starting)   
+aerostic-nginx            Up 6 seconds                      0.0.0.0:80->80/tcp, [::]:80->80/tcp, 0.0.0.0:443->443/tcp, [::]:443->443/tcp
+aerostic-postgres         Up 8 seconds (health: starting)   0.0.0.0:5433->5432/tcp, [::]:5433->5432/tcp
+aerostic-redis            Up 8 seconds (healthy)            6379/tcp
+aerostic-webhook          Up 8 seconds (health: starting)   
+
+⏳ STEP 7: WAIT FOR SERVICES TO BE READY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Waiting for API to be ready (30 seconds)...
+  Attempt 1/15...
+  Attempt 2/15...
+✓ API is responding!
+
+🏥 STEP 8: HEALTH CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Testing health endpoints...
+
+Full Health (/api/health):
+  ✓ Responding
+Liveness (/api/health/live):
+  ✓ Responding
+Readiness (/api/health/ready):
+  ✓ Responding
+
+╔════════════════════════════════════════════════════════════════╗
+║                  ✅ REBUILD COMPLETE                          ║
+╚════════════════════════════════════════════════════════════════╝
+
+📊 REBUILD SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Build Time: 7m 46s
+Status: ✓ Complete
+Containers: 7 running
+Code: Latest from main branch
+
+📍 SERVICE ENDPOINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+API:              http://localhost:3000
+Admin Frontend:   http://localhost:3001
+App Frontend:     http://localhost:3002
+Health Check:     http://localhost:3000/api/health
+
+📂 BUILD LOGS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Log file: /home/ubuntu/aerostic/rebuild_log_20260209_113046.txt
+
+🔍 NEXT STEPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Monitor logs: docker compose logs -f
+2. Check health: curl http://localhost:3000/api/health
+3. View containers: docker compose ps
+4. Review issues: docker compose logs api | grep -i error
+
+════════════════════════════════════════════════════════════════
+              🎉 Docker rebuild successfully completed!
+════════════════════════════════════════════════════════════════
+

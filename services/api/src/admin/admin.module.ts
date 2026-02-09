@@ -1,9 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AdminController } from './admin.controller';
-import { AdminAuthController } from './admin-auth.controller';
 import { AdminService } from './admin.service';
-import { AdminAuthService } from './admin-auth.service';
 import { Tenant } from '../tenants/tenant.entity';
 import { User } from '../users/user.entity';
 import { BillingLimit } from '../billing/billing-limit.entity';
@@ -32,8 +30,8 @@ import { AdminsController } from './admins.controller';
             AdminTenantAssignment,
         ]),
     ],
-    controllers: [AdminController, AdminAuthController, AdminsController],
-    providers: [AdminService, AdminAuthService],
-    exports: [AdminService, AdminAuthService],
+    controllers: [AdminController, AdminsController],
+    providers: [AdminService],
+    exports: [AdminService],
 })
 export class AdminModule { }

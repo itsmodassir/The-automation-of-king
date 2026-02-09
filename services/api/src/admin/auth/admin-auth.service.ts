@@ -31,8 +31,19 @@ export class AdminAuthService {
                 sub: admin.id,
                 email: admin.email,
                 role: admin.role,
-                isAdmin: true
+                isAdmin: true,
+                type: 'admin'
             }),
         };
+    }
+
+    async register(email: string, pass: string, role: string) {
+        const hash = await bcrypt.hash(pass, 10);
+        const admin = this.adminRepo.create({
+            email,
+            passwordHash: hash,
+            role: role as any,
+        });
+        return this.adminRepo.save(admin);
     }
 }

@@ -1,5 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { HealthService } from './health.service';
+import { ApiTags } from '@nestjs/swagger';
 
 /**
  * Health Check Controller
@@ -14,10 +15,12 @@ import { HealthService } from './health.service';
  * - Kubernetes probes
  * - Load balancers
  * - Monitoring systems
+ * - Monitoring dashboards
  */
+@ApiTags('Health')
 @Controller('health')
 export class HealthController {
-    constructor(private healthService: HealthService) {}
+    constructor(private healthService: HealthService) { }
 
     /**
      * Full health check
