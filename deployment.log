@@ -1,0 +1,16 @@
+╔════════════════════════════════════════════════════════════════╗
+║                                                                ║
+║        🚀 AWS EC2 PRODUCTION DEPLOYMENT - THE AUTOMATION       ║
+║                                                                ║
+╚════════════════════════════════════════════════════════════════╝
+
+📋 DEPLOYMENT CONFIGURATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Repository: https://github.com/itsmodassir/The-automation-of-king.git
+Deploy Path: /home/ubuntu/aerostic
+Backup Path: /home/ubuntu/aerostic_backup_20260209_111605
+Timestamp: 20260209_111605
+
+📦 STEP 1: BACKUP EXISTING DEPLOYMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ Creating backup of existing deployment...
